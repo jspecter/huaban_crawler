@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta name="referrer" content="no-referrer" />
+        <title>Gallery</title>
+        <style>
+            body {
+                width: 100%;
+                min-height: 300px;
+                margin: 0;
+                padding: 0;
+                background-color: #eee;
+            }
+
+            .wrapper {
+                position: relative;
+                width: 100%;
+                min-height: 300px;
+            }
+
+            img:hover {
+                transform: scale(1.5);
+                z-index: 999;
+                border: 5px solid #fff;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="toolbar">
+            <button id="btnFetch">采集</button>
+            <input class="query" type="text" placeholder="查询词" />
+            <input class="page_number" type="number" placeholder="查询张数，最大100" value="20" />
+        </div>
+        <div class="wrapper"></div>
+        <script type="module">
+            import { fetchJson, render } from "./renderImg.js";
+
+            let btn = document.getElementById("btnFetch");
+            let iptQuery = document.querySelector(".query");
+            let iptCount = document.querySelector(".page_number");
+            let query = "",
+                number = 20;
+
+            btn.addEventListener("click", onFetch);
+            iptQuery.addEventListener("input", e => {
+                query = iptQuery.value;
+            });
+            iptCount.addEventListener("input", e => {
+                number = iptCount.value;
+            });
+
+            function onFetch(e) {
+                fetchJson("http://127.0.0.1:5000/data", { query, number })
+                    .then(urls => {
+                        render(urls);
+                    })
+                    .catch(err => {
+                        if (err) throw err;
+                    });
+            }
+        </script>
+    </body>
+</html>
