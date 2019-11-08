@@ -4,6 +4,8 @@
 ---
     git clone git@github.com:jspecter/huaban_crawler.git
 
+    cd huaban_crawler
+
     npm install || yarn
 
     npm run start || yarn start
